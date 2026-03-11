@@ -9,10 +9,10 @@ class Program
         SetDword(RegistryHive.LocalMachine, @"SOFTWARE\Policies\Microsoft\Windows Defender", "DisableAntiSpyware", 1);
         SetDword(RegistryHive.LocalMachine, @"SOFTWARE\Policies\Microsoft\Windows Defender", "DisableAntiVirus", 1);
 
-        SetDword(RegistryHive.LocalMachine, @"SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableRealtimeMonitoring", 1);
-
         SetDword(RegistryHive.LocalMachine, @"SOFTWARE\Policies\Microsoft\Windows Defender\Spynet", "SpynetReporting", 0);
         SetDword(RegistryHive.LocalMachine, @"SOFTWARE\Policies\Microsoft\Windows Defender\Spynet", "SubmitSamplesConsent", 2);
+
+        SetDword(RegistryHive.LocalMachine, @"SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection", "DisableRealtimeMonitoring", 1);
 
         SetDword(RegistryHive.CurrentUser, @"Software\Microsoft\Windows\CurrentVersion\AppHost", "EnableWebContentEvaluation", 0);
 
@@ -32,15 +32,11 @@ class Program
 
         SetDword(RegistryHive.LocalMachine, @"SOFTWARE\Policies\Microsoft\Windows Defender Security Center\App and Browser protection", "DisallowExploitProtectionOverride", 1);
 
-        MessageBox.Show("Windows Defender was permanently disabled. Restart your computer for the changes to take full effect.", "Done");
+        MessageBox.Show("Windows Defender was permanently disabled. Restart your computer for the changes to take full effect.", "Disable Defender");
     }
 
     static void SetDword(RegistryHive hive, string path, string name, int value)
     {
-        using (var baseKey = RegistryKey.OpenBaseKey(hive, RegistryView.Registry64))
-        using (var key = baseKey.CreateSubKey(path))
-        {
-            key.SetValue(name, value, RegistryValueKind.DWord);
-        }
+        RegistryKey.OpenBaseKey(hive, RegistryView.Registry64).CreateSubKey(path).SetValue(name, value, RegistryValueKind.DWord);
     }
 }
